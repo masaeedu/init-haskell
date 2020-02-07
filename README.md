@@ -32,8 +32,12 @@ You can invoke the following in a terminal to get live error info:
 ghcid
 ```
 
+## Demo
+
+[Asciinema recording](https://asciinema.org/a/mqEqyvyXfGKKjjj5wECdNoShN)
+
 ## Dependencies
 
-Requires Nix to be installed, gets everything else it needs through a Nix shell.
+Requires Nix to be installed, gets everything else it needs through a Nix shell. You'll also want `direnv` installed globally if you want to automatically be dropped into a shell with all the goodies, otherwise manually use `nix-shell`.
 
 Please read through the script and substitute the appropriate parts before you execute it. PRs to parametrize out my name and preferred list of extensions welcome.
