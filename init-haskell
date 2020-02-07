@@ -82,7 +82,7 @@ main = putStrLn "Hello, Haskell!"
 EOF
 
 cat <<EOF > ./hie.yaml
-cradle: { cabal: {} }
+cradle: { cabal: { component: "all" } }
 EOF
 
 # Add default.nix
