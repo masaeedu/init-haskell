@@ -12,7 +12,7 @@ init-haskell
 # wait 20 years for everything to get set up
 ```
 
-### Build
+### Build and run
 
 ```
 hpack && cabal run
@@ -20,8 +20,16 @@ hpack && cabal run
 
 ### IDE
 
+Your editor can invoke the following to get language server analysis:
+
 ```
 ghcide
+```
+
+You can invoke the following in a terminal to get live error info:
+
+```
+ghcid
 ```
 
 ## Dependencies
