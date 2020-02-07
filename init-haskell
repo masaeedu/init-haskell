@@ -1,0 +1,136 @@
+#! /usr/bin/env nix-shell
+#! nix-shell --pure --keep NIX_SSL_CERT_FILE --keep GITHUB_TOKEN -i bash -p git gitAndTools.git-ignore niv direnv nix
+set -Eeuxo pipefail
+
+# Set up git
+git init
+git-ignore haskell >./gitignore
+echo '*.cabal' >> .gitignore
+
+# Set up niv
+niv init
+niv update nixpkgs -b nixos-unstable
+niv add hercules-ci/ghcide-nix
+niv add -n iohk-nixpkgs input-output-hk/nixpkgs -b a8f81dc037a5977414a356dd068f2621b3c89b60
+niv add -n iohk-hnix input-output-hk/haskell.nix -b master
+
+export author="Asad Saeeduddin"
+export email="masaeedu@gmail.com"
+export ghc="ghc865"
+export projectname=${PWD##*/}
+
+# Create hpack project
+cat <<EOF > ./package.yaml
+spec-version: 0.30.0
+name: $projectname
+author: ${author}
+maintainer: ${email}
+license: MIT
+
+build-type: Simple
+
+source-dirs: src
+dependencies:
+- { name: "base", version: '>=4.12 && <4.13' }
+
+ghc-options: -Wall
+default-extensions:
+- GADTs
+
+- StandaloneDeriving
+- DeriveFunctor
+- DerivingVia
+- GeneralizedNewtypeDeriving
+
+- ScopedTypeVariables
+- RankNTypes
+- QuantifiedConstraints
+
+- TypeApplications
+- TypeOperators
+- MultiParamTypeClasses
+
+- ConstraintKinds
+- DataKinds
+- PolyKinds
+- KindSignatures
+
+- UndecidableInstances
+- FlexibleInstances
+- FlexibleContexts
+- DefaultSignatures
+
+library: {}
+executable:
+  main: Main.hs
+EOF
+
+cat <<EOF > ./cabal.project
+packages: .
+index-state: 2020-01-01T00:00:00Z
+EOF
+
+mkdir src
+
+cat <<EOF > ./src/Main.hs
+module Main where
+
+main :: IO ()
+main = putStrLn "Hello, Haskell!"
+EOF
+
+cat <<EOF > ./hie.yaml
+cradle: { cabal: {} }
+EOF
+
+# Add default.nix
+cat <<EOF > ./default.nix
+let
+  sources = import ./nix/sources.nix;
+  compilerVersion = "${ghc}";
+  pkgs = (import sources.iohk-nixpkgs) (import sources.iohk-hnix);
+in
+pkgs.haskell-nix.cabalProject {
+  src = pkgs.haskell-nix.haskellLib.cleanGit { src = ./.; };
+  ghc = pkgs.buildPackages.pkgs.haskell-nix.compiler.\${compilerVersion};
+}
+EOF
+
+cat << EOF > ./shell.nix
+let
+  sources = import ./nix/sources.nix;
+  compilerVersion = "${ghc}";
+  ghcide = (import sources.ghcide-nix {})."ghcide-\${compilerVersion}";
+  pkgs = import sources.iohk-nixpkgs {};
+  pkgs' = import sources.nixpkgs {};
+  hspkgs = import ./default.nix;
+in
+hspkgs.shellFor {
+  withHoogle = true;
+  buildInputs = [
+    ghcide
+    pkgs.haskellPackages.ghcid
+    pkgs'.cabal-install
+    pkgs'.haskellPackages.hpack
+  ];
+}
+EOF
+
+# Create direnv file
+# TODO: Remove the grep stuff once https://github.com/hercules-ci/ghcide-nix/issues/26 is resolved
+cat << 'EOF' > .envrc
+use nix
+source <(grep 'export NIX_' $(which ghc))
+EOF
+
+cat << 'EOF' > CACHES.md
+This project uses various nix expressions for building code. In order to avoid building a huge amount of stuff at once, you might want to enable the following [cachix](https://cachix.org/) caches:
+
+- nix-tools
+- hercules-ci
+
+EOF
+
+git add .
+
+direnv allow
