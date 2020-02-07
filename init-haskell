@@ -17,6 +17,8 @@ niv add -n iohk-hnix input-output-hk/haskell.nix -b master
 export author="Asad Saeeduddin"
 export email="masaeedu@gmail.com"
 export ghc="ghc865"
+export snapshot="2020-01-01T00:00:00Z"
+
 export projectname=${PWD##*/}
 
 # Create hpack project
@@ -67,7 +69,7 @@ EOF
 
 cat <<EOF > ./cabal.project
 packages: .
-index-state: 2020-01-01T00:00:00Z
+index-state: $snapshot
 EOF
 
 mkdir src
