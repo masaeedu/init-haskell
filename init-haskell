@@ -2,6 +2,14 @@
 #! nix-shell --pure --keep NIX_SSL_CERT_FILE --keep GITHUB_TOKEN -i bash -p git gitAndTools.git-ignore niv direnv nix
 set -Eeuxo pipefail
 
+# Variables
+export author="Asad Saeeduddin"
+export email="masaeedu@gmail.com"
+export ghc="ghc865"
+export snapshot="2020-01-01T00:00:00Z"
+
+export projectname=${PWD##*/}
+
 # Set up git
 git init
 git-ignore haskell >./gitignore
@@ -13,13 +21,6 @@ niv update nixpkgs -b nixos-unstable
 niv add hercules-ci/ghcide-nix
 niv add -n iohk-nixpkgs input-output-hk/nixpkgs -b a8f81dc037a5977414a356dd068f2621b3c89b60
 niv add -n iohk-hnix input-output-hk/haskell.nix -b master
-
-export author="Asad Saeeduddin"
-export email="masaeedu@gmail.com"
-export ghc="ghc865"
-export snapshot="2020-01-01T00:00:00Z"
-
-export projectname=${PWD##*/}
 
 # Create hpack project
 cat <<EOF > ./package.yaml
