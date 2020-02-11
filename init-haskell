@@ -16,11 +16,72 @@ git-ignore haskell >./.gitignore
 echo '*.cabal' >> .gitignore
 
 # Set up niv
+mkdir nix
+cat <<EOF > ./nix/sources.json
+{
+    "ghcide-nix": {
+        "branch": "master",
+        "description": "Nix installation for ghcide",
+        "homepage": "https://github.com/digital-asset/ghcide",
+        "owner": "hercules-ci",
+        "repo": "ghcide-nix",
+        "rev": "55d5a88187bff73e4cb15f366bda3c8e6119954e",
+        "sha256": "18gjqk6vgzpja3v14drpn8fl84hmda5gkr6wxggxk320qdajdxw1",
+        "type": "tarball",
+        "url": "https://github.com/hercules-ci/ghcide-nix/archive/55d5a88187bff73e4cb15f366bda3c8e6119954e.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "iohk-hnix": {
+        "branch": "master",
+        "description": "Alternative Haskell Infrastructure for Nixpkgs",
+        "homepage": "https://input-output-hk.github.io/haskell.nix",
+        "owner": "input-output-hk",
+        "repo": "haskell.nix",
+        "rev": "ce65bf2c0eaf6096a60f7d4d04cc26d01012ce01",
+        "sha256": "1grmcm47bihlgy07s2m9wjq427mgxr66fwhb2jg2xp49dckdr4y2",
+        "type": "tarball",
+        "url": "https://github.com/input-output-hk/haskell.nix/archive/ce65bf2c0eaf6096a60f7d4d04cc26d01012ce01.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "iohk-nixpkgs": {
+        "branch": "a8f81dc037a5977414a356dd068f2621b3c89b60",
+        "description": "Nix Packages collection",
+        "homepage": null,
+        "owner": "input-output-hk",
+        "repo": "nixpkgs",
+        "rev": "a8f81dc037a5977414a356dd068f2621b3c89b60",
+        "sha256": "01z13axll5g5yl00lz9adr2jw2bs12g9skhbb1vxy8p7fjjbhhhm",
+        "type": "tarball",
+        "url": "https://github.com/input-output-hk/nixpkgs/archive/a8f81dc037a5977414a356dd068f2621b3c89b60.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "niv": {
+        "branch": "master",
+        "description": "Easy dependency management for Nix projects",
+        "homepage": "https://github.com/nmattia/niv",
+        "owner": "nmattia",
+        "repo": "niv",
+        "rev": "2ecfd86b631714b457e56d70dd83fa60435baeb6",
+        "sha256": "01j6727cws8blg1npp54b4w6xa0gpgyzhyws2vqgp8clnlnmqqhi",
+        "type": "tarball",
+        "url": "https://github.com/nmattia/niv/archive/2ecfd86b631714b457e56d70dd83fa60435baeb6.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs": {
+        "branch": "nixos-unstable",
+        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
+        "homepage": "https://github.com/NixOS/nixpkgs",
+        "owner": "NixOS",
+        "repo": "nixpkgs-channels",
+        "rev": "a21c2fa3ea2b88e698db6fc151d9c7259ae14d96",
+        "sha256": "1z3kxlbz6bqx1dlagcazg04vhk67r8byihzf959c3m0laf2a1w7y",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/a21c2fa3ea2b88e698db6fc151d9c7259ae14d96.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}
+EOF
 niv init
-niv update nixpkgs -b nixos-unstable
-niv add hercules-ci/ghcide-nix
-niv add -n iohk-nixpkgs input-output-hk/nixpkgs -b a8f81dc037a5977414a356dd068f2621b3c89b60
-niv add -n iohk-hnix input-output-hk/haskell.nix -b master
 
 # Create hpack project
 cat <<EOF > ./package.yaml
