@@ -12,7 +12,7 @@ export projectname=${PWD##*/}
 
 # Set up git
 git init
-git-ignore haskell >./gitignore
+git-ignore haskell >./.gitignore
 echo '*.cabal' >> .gitignore
 
 # Set up niv
