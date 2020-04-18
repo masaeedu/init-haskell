@@ -134,19 +134,6 @@ packages: .
 index-state: $snapshot
 EOF
 
-mkdir src
-
-cat <<EOF > ./src/Main.hs
-module Main where
-
-main :: IO ()
-main = putStrLn "Hello, Haskell!"
-EOF
-
-cat <<EOF > ./hie.yaml
-cradle: { cabal: { component: "all" } }
-EOF
-
 # Add default.nix
 cat <<EOF > ./default.nix
 let
@@ -180,6 +167,11 @@ hspkgs.shellFor {
 }
 EOF
 
+# Add hie.yaml file to help ghcide figure out what's what
+cat <<EOF > ./hie.yaml
+cradle: { cabal: { component: "all" } }
+EOF
+
 # Create direnv file
 # TODO: Remove the grep stuff once https://github.com/hercules-ci/ghcide-nix/issues/26 is resolved
 cat << 'EOF' > .envrc
@@ -193,6 +185,16 @@ This project uses various nix expressions for building code. In order to avoid b
 - nix-tools
 - hercules-ci
 
+EOF
+
+# Add a hello world source file
+mkdir src
+
+cat <<EOF > ./src/Main.hs
+module Main where
+
+main :: IO ()
+main = putStrLn "Hello, Haskell!"
 EOF
 
 git add .
