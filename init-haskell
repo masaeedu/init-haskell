@@ -5,8 +5,8 @@ set -Eeuxo pipefail
 # Variables
 export author="Asad Saeeduddin"
 export email="masaeedu@gmail.com"
-export ghc="ghc865"
-export snapshot="2020-01-01T00:00:00Z"
+export ghc="ghc883"
+export snapshot="2020-02-04T00:00:00Z"
 
 export projectname=${PWD##*/}
 
@@ -23,12 +23,12 @@ cat <<EOF > ./nix/sources.json
         "branch": "master",
         "description": "Nix installation for ghcide",
         "homepage": "https://github.com/digital-asset/ghcide",
-        "owner": "hercules-ci",
+        "owner": "cachix",
         "repo": "ghcide-nix",
-        "rev": "55d5a88187bff73e4cb15f366bda3c8e6119954e",
-        "sha256": "18gjqk6vgzpja3v14drpn8fl84hmda5gkr6wxggxk320qdajdxw1",
+        "rev": "27d15fc49c1f4510adb82540439da362328cdef8",
+        "sha256": "1ic4mrryhgh9k041xv81vw0pky1b02k077rqy1jnz3jb47chwxf4",
         "type": "tarball",
-        "url": "https://github.com/hercules-ci/ghcide-nix/archive/55d5a88187bff73e4cb15f366bda3c8e6119954e.tar.gz",
+        "url": "https://github.com/cachix/ghcide-nix/archive/27d15fc49c1f4510adb82540439da362328cdef8.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "iohk-hnix": {
@@ -37,22 +37,10 @@ cat <<EOF > ./nix/sources.json
         "homepage": "https://input-output-hk.github.io/haskell.nix",
         "owner": "input-output-hk",
         "repo": "haskell.nix",
-        "rev": "ce65bf2c0eaf6096a60f7d4d04cc26d01012ce01",
-        "sha256": "1grmcm47bihlgy07s2m9wjq427mgxr66fwhb2jg2xp49dckdr4y2",
+        "rev": "32baaac4d7858ae3349c1f6d1452371f998c7f49",
+        "sha256": "0g0jh0jwips3qyxs7rb1d4qvqs6rralnq318x5x2wvy1mkzvxvlg",
         "type": "tarball",
-        "url": "https://github.com/input-output-hk/haskell.nix/archive/ce65bf2c0eaf6096a60f7d4d04cc26d01012ce01.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "iohk-nixpkgs": {
-        "branch": "a8f81dc037a5977414a356dd068f2621b3c89b60",
-        "description": "Nix Packages collection",
-        "homepage": null,
-        "owner": "input-output-hk",
-        "repo": "nixpkgs",
-        "rev": "a8f81dc037a5977414a356dd068f2621b3c89b60",
-        "sha256": "01z13axll5g5yl00lz9adr2jw2bs12g9skhbb1vxy8p7fjjbhhhm",
-        "type": "tarball",
-        "url": "https://github.com/input-output-hk/nixpkgs/archive/a8f81dc037a5977414a356dd068f2621b3c89b60.tar.gz",
+        "url": "https://github.com/input-output-hk/haskell.nix/archive/32baaac4d7858ae3349c1f6d1452371f998c7f49.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -61,22 +49,10 @@ cat <<EOF > ./nix/sources.json
         "homepage": "https://github.com/nmattia/niv",
         "owner": "nmattia",
         "repo": "niv",
-        "rev": "2ecfd86b631714b457e56d70dd83fa60435baeb6",
-        "sha256": "01j6727cws8blg1npp54b4w6xa0gpgyzhyws2vqgp8clnlnmqqhi",
+        "rev": "febd3530f0c2f2fb74752ee4d9dd2518d302f618",
+        "sha256": "1gifi50k4h6wk9ix0yvp66p7jk8rrqgr39r5rf4lyha6pbs7dbk6",
         "type": "tarball",
-        "url": "https://github.com/nmattia/niv/archive/2ecfd86b631714b457e56d70dd83fa60435baeb6.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "nixpkgs": {
-        "branch": "nixos-unstable",
-        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
-        "homepage": "https://github.com/NixOS/nixpkgs",
-        "owner": "NixOS",
-        "repo": "nixpkgs-channels",
-        "rev": "a21c2fa3ea2b88e698db6fc151d9c7259ae14d96",
-        "sha256": "1z3kxlbz6bqx1dlagcazg04vhk67r8byihzf959c3m0laf2a1w7y",
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/a21c2fa3ea2b88e698db6fc151d9c7259ae14d96.tar.gz",
+        "url": "https://github.com/nmattia/niv/archive/febd3530f0c2f2fb74752ee4d9dd2518d302f618.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
@@ -95,7 +71,7 @@ build-type: Simple
 
 source-dirs: src
 dependencies:
-- { name: "base", version: '>=4.12 && <4.13' }
+- { name: "base", version: '>=4.13 && <4.14' }
 
 ghc-options: -Wall
 default-extensions:
@@ -139,11 +115,12 @@ cat <<EOF > ./default.nix
 let
   sources = import ./nix/sources.nix;
   compilerVersion = "${ghc}";
-  pkgs = (import sources.iohk-nixpkgs) (import sources.iohk-hnix);
+  hnix = import sources.iohk-hnix {};
+  pkgs = (import hnix.sources.nixpkgs) hnix.nixpkgsArgs;
 in
 pkgs.haskell-nix.cabalProject {
   src = pkgs.haskell-nix.haskellLib.cleanGit { src = ./.; };
-  ghc = pkgs.buildPackages.pkgs.haskell-nix.compiler.\${compilerVersion};
+  compiler-nix-name = compilerVersion;
 }
 EOF
 
@@ -152,24 +129,19 @@ let
   sources = import ./nix/sources.nix;
   compilerVersion = "${ghc}";
   ghcide = (import sources.ghcide-nix {})."ghcide-\${compilerVersion}";
-  pkgs = import sources.iohk-nixpkgs {};
-  pkgs' = import sources.nixpkgs {};
-  hspkgs = import ./default.nix;
+  hspkgs = import ./.;
 in
 hspkgs.shellFor {
   withHoogle = true;
   buildInputs = [
     ghcide
-    pkgs.haskellPackages.ghcid
-    pkgs'.cabal-install
-    pkgs'.haskellPackages.hpack
   ];
 }
 EOF
 
 # Add hie.yaml file to help ghcide figure out what's what
 cat <<EOF > ./hie.yaml
-cradle: { cabal: { component: "all" } }
+cradle: { cabal: { component: "${projectname}" } }
 EOF
 
 # Create direnv file
@@ -182,8 +154,8 @@ EOF
 cat << 'EOF' > CACHES.md
 This project uses various nix expressions for building code. In order to avoid building a huge amount of stuff at once, you might want to enable the following [cachix](https://cachix.org/) caches:
 
-- nix-tools
-- hercules-ci
+- iohk
+- ghcide-nix
 
 EOF
 
