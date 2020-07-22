@@ -1,0 +1,42 @@
+spec-version: 0.30.0
+name: {{projectname}}
+author: {{author}}
+maintainer: {{email}}
+license: MIT
+
+build-type: Simple
+
+source-dirs: src
+dependencies:
+- { name: "base", version: '>=4.13 && <4.14' }
+
+ghc-options: -Wall
+default-extensions:
+- GADTs
+
+- StandaloneDeriving
+- DeriveFunctor
+- DerivingVia
+- GeneralizedNewtypeDeriving
+
+- ScopedTypeVariables
+- RankNTypes
+- QuantifiedConstraints
+
+- TypeApplications
+- TypeOperators
+- MultiParamTypeClasses
+
+- ConstraintKinds
+- DataKinds
+- PolyKinds
+- KindSignatures
+
+- UndecidableInstances
+- FlexibleInstances
+- FlexibleContexts
+- DefaultSignatures
+
+library: {}
+executable:
+  main: Main.hs

@@ -1,172 +1,50 @@
 #! /usr/bin/env nix-shell
-#! nix-shell --pure --keep NIX_SSL_CERT_FILE --keep GITHUB_TOKEN -i bash -p git gitAndTools.git-ignore niv direnv nix
+#! nix-shell --pure --keep NIX_SSL_CERT_FILE --keep GITHUB_TOKEN -i bash -p git mustache-go niv direnv nix
 set -Eeuxo pipefail
 
-# Variables
-export author="Asad Saeeduddin"
-export email="masaeedu@gmail.com"
-export ghc="ghc883"
-export snapshot="2020-02-04T00:00:00Z"
+# init-haskell location
+base=$(dirname "$(readlink -f "$0")")
 
-export projectname=${PWD##*/}
+# Variables
+data=$(mktemp)
+cat <<EOF >$data
+{ "author": "Asad Saeeduddin"
+, "email": "masaeedu@gmail.com"
+, "ghc": "ghc883"
+, "snapshot": "2020-02-04T00:00:00Z"
+, "projectname": "pls"
+}
+EOF
 
 # Set up git
 git init
-git-ignore haskell >./.gitignore
-echo '*.cabal' >> .gitignore
+mustache $base/templates/.gitignore >.gitignore <$data
 
 # Set up niv
 mkdir nix
-cat <<EOF > ./nix/sources.json
-{
-    "ghcide-nix": {
-        "branch": "master",
-        "description": "Nix installation for ghcide",
-        "homepage": "https://github.com/digital-asset/ghcide",
-        "owner": "cachix",
-        "repo": "ghcide-nix",
-        "rev": "27d15fc49c1f4510adb82540439da362328cdef8",
-        "sha256": "1ic4mrryhgh9k041xv81vw0pky1b02k077rqy1jnz3jb47chwxf4",
-        "type": "tarball",
-        "url": "https://github.com/cachix/ghcide-nix/archive/27d15fc49c1f4510adb82540439da362328cdef8.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "iohk-hnix": {
-        "branch": "master",
-        "description": "Alternative Haskell Infrastructure for Nixpkgs",
-        "homepage": "https://input-output-hk.github.io/haskell.nix",
-        "owner": "input-output-hk",
-        "repo": "haskell.nix",
-        "rev": "32baaac4d7858ae3349c1f6d1452371f998c7f49",
-        "sha256": "0g0jh0jwips3qyxs7rb1d4qvqs6rralnq318x5x2wvy1mkzvxvlg",
-        "type": "tarball",
-        "url": "https://github.com/input-output-hk/haskell.nix/archive/32baaac4d7858ae3349c1f6d1452371f998c7f49.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "niv": {
-        "branch": "master",
-        "description": "Easy dependency management for Nix projects",
-        "homepage": "https://github.com/nmattia/niv",
-        "owner": "nmattia",
-        "repo": "niv",
-        "rev": "febd3530f0c2f2fb74752ee4d9dd2518d302f618",
-        "sha256": "1gifi50k4h6wk9ix0yvp66p7jk8rrqgr39r5rf4lyha6pbs7dbk6",
-        "type": "tarball",
-        "url": "https://github.com/nmattia/niv/archive/febd3530f0c2f2fb74752ee4d9dd2518d302f618.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    }
-}
-EOF
+mustache $base/templates/sources.json >./nix/sources.json <$data
 niv init
 
 # Create hpack project
-cat <<EOF > ./package.yaml
-spec-version: 0.30.0
-name: $projectname
-author: ${author}
-maintainer: ${email}
-license: MIT
-
-build-type: Simple
-
-source-dirs: src
-dependencies:
-- { name: "base", version: '>=4.13 && <4.14' }
-
-ghc-options: -Wall
-default-extensions:
-- GADTs
-
-- StandaloneDeriving
-- DeriveFunctor
-- DerivingVia
-- GeneralizedNewtypeDeriving
-
-- ScopedTypeVariables
-- RankNTypes
-- QuantifiedConstraints
-
-- TypeApplications
-- TypeOperators
-- MultiParamTypeClasses
-
-- ConstraintKinds
-- DataKinds
-- PolyKinds
-- KindSignatures
-
-- UndecidableInstances
-- FlexibleInstances
-- FlexibleContexts
-- DefaultSignatures
-
-library: {}
-executable:
-  main: Main.hs
-EOF
-
-cat <<EOF > ./cabal.project
-packages: .
-index-state: $snapshot
-EOF
+mustache $base/templates/cabal.project >./cabal.project <$data
+mustache $base/templates/package.yaml >./package.yaml <$data
 
 # Add default.nix
-cat <<EOF > ./default.nix
-let
-  sources = import ./nix/sources.nix;
-  compilerVersion = "${ghc}";
-  hnix = import sources.iohk-hnix {};
-  pkgs = (import hnix.sources.nixpkgs) hnix.nixpkgsArgs;
-in
-pkgs.haskell-nix.cabalProject {
-  src = pkgs.haskell-nix.haskellLib.cleanGit { src = ./.; };
-  compiler-nix-name = compilerVersion;
-}
-EOF
-
-cat << EOF > ./shell.nix
-let
-  sources = import ./nix/sources.nix;
-  compilerVersion = "${ghc}";
-  ghcide = (import sources.ghcide-nix {})."ghcide-\${compilerVersion}";
-  hspkgs = import ./.;
-in
-hspkgs.shellFor {
-  withHoogle = true;
-  buildInputs = [
-    ghcide
-  ];
-}
-EOF
+mustache $base/templates/default.nix >./default.nix <$data
+mustache $base/templates/shell.nix >./shell.nix <$data
 
 # Add hie.yaml file to help ghcide figure out what's what
-cat <<EOF > ./hie.yaml
-cradle: { cabal: { component: "${projectname}" } }
-EOF
+mustache $base/templates/hie.yaml >./hie.yaml <$data
 
 # Create direnv file
 # TODO: Remove the grep stuff once https://github.com/hercules-ci/ghcide-nix/issues/26 is resolved
-cat << 'EOF' > .envrc
-use nix
-source <(grep 'export NIX_' $(which ghc))
-EOF
+mustache $base/templates/.envrc >./.envrc <$data
 
-cat << 'EOF' > CACHES.md
-This project uses various nix expressions for building code. In order to avoid building a huge amount of stuff at once, you might want to enable the following [cachix](https://cachix.org/) caches:
-
-- iohk
-- ghcide-nix
-
-EOF
+# Add note about caching
+mustache $base/templates/CACHES.md >./CACHES.md <$data
 
 # Add a hello world source file
 mkdir src
-
-cat <<EOF > ./src/Main.hs
-module Main where
-
-main :: IO ()
-main = putStrLn "Hello, Haskell!"
-EOF
+mustache $base/templates/Main.hs >./src/Main.hs <$data
 
 git add .
