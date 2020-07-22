@@ -8,8 +8,8 @@ base=$(dirname "$(readlink -f "$0")")
 # Variables
 data=$(mktemp)
 cat <<EOF >$data
-{ "author": "Asad Saeeduddin"
-, "email": "masaeedu@gmail.com"
+{ "author": "$(git config user.name)"
+, "email": "$(git config user.email)"
 , "ghc": "ghc883"
 , "snapshot": "2020-02-04T00:00:00Z"
 , "projectname": "pls"
