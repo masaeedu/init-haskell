@@ -7,12 +7,13 @@ base=$(dirname "$(readlink -f "$0")")
 
 # Variables
 data=$(mktemp)
+projectname=${PWD##*/}
 cat <<EOF >$data
 { "author": "$(git config user.name)"
 , "email": "$(git config user.email)"
 , "ghc": "ghc883"
 , "snapshot": "2020-07-01T00:00:00Z"
-, "projectname": "pls"
+, "projectname": "${projectname}"
 }
 EOF
 
