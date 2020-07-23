@@ -1,15 +1,16 @@
 # init-haskell
 
-A script thing I use to set up a folder for developing a new Haskell project with Nix, niv, hpack, ghcide, and Cabal 3.0.
+Scaffolding for developing a Haskell project with Nix, niv, hpack, ghcide, and Cabal 3.
 
 ## Usage
 
 ### Set up
 
+Download this repo and add it to your PATH. To start a new project:
+
 ```
-cd ./myprojectname
+mkdir myprojectname && cd myprojectname
 init-haskell
-# wait 20 years for everything to get set up
 ```
 
 ### Build and run
@@ -39,5 +40,3 @@ ghcid
 ## Dependencies
 
 Requires Nix to be installed, gets everything else it needs through a Nix shell. You'll also want `direnv` installed globally if you want to automatically be dropped into a shell with all the goodies, otherwise manually use `nix-shell`.
-
-Please read through the script and substitute the appropriate parts before you execute it. PRs to parametrize out my name and preferred list of extensions welcome.
