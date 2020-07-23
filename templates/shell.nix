@@ -9,7 +9,7 @@ in
   withHoogle = true;
   buildInputs = [
     ghcide
-    (pkgs.haskell-nix.tool compilerVersion "hpack" "0.34.2")
-    (pkgs.haskell-nix.tool compilerVersion "ghcid" "0.8.7")
+    (pkgs.haskell-nix.tool compilerVersion "hpack" { index-state = "{{snapshot}}"; version = "0.34.2"; })
+    (pkgs.haskell-nix.tool compilerVersion "ghcid" { index-state = "{{snapshot}}"; version = "0.8.7"; })
   ];
 }
