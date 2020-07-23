@@ -6,7 +6,6 @@ license: MIT
 
 build-type: Simple
 
-source-dirs: src
 dependencies:
 - { name: "base", version: '>=4.13 && <4.14' }
 
@@ -37,6 +36,11 @@ default-extensions:
 - FlexibleContexts
 - DefaultSignatures
 
-library: {}
+library:
+  source-dirs: lib
+
 executable:
+  source-dirs: app
   main: Main.hs
+  dependencies:
+  - {{projectname}}
