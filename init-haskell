@@ -22,7 +22,7 @@ git init
 mustache $base/templates/.gitignore >.gitignore <$data
 
 # Set up niv
-mkdir nix
+mkdir nix || exit 0
 mustache $base/templates/sources.json >./nix/sources.json <$data
 niv init
 
@@ -45,9 +45,9 @@ mustache $base/templates/.envrc >./.envrc <$data
 mustache $base/templates/CACHES.md >./CACHES.md <$data
 
 # Add a hello world source file
-mkdir lib
+mkdir lib || exit 0
 mustache $base/templates/Lib.hs >./lib/Lib.hs <$data
-mkdir app
+mkdir app || exit 0
 mustache $base/templates/Main.hs >./app/Main.hs <$data
 
 git add .
