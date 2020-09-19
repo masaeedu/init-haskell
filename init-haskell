@@ -34,11 +34,10 @@ mustache $base/templates/package.yaml >./package.yaml <$data
 mustache $base/templates/default.nix >./default.nix <$data
 mustache $base/templates/shell.nix >./shell.nix <$data
 
-# Add hie.yaml file to help ghcide figure out what's what
+# Add hie.yaml file to help language server figure out what's what
 mustache $base/templates/hie.yaml >./hie.yaml <$data
 
 # Create direnv file
-# TODO: Remove the grep stuff once https://github.com/hercules-ci/ghcide-nix/issues/26 is resolved
 mustache $base/templates/.envrc >./.envrc <$data
 
 # Add note about caching

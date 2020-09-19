@@ -1,6 +1,6 @@
 # init-haskell
 
-Scaffolding for developing a Haskell project with Nix, niv, hpack, ghcide, and Cabal 3.
+Scaffolding for developing a Haskell project with Nix, niv, hpack, haskell-language-server, and Cabal 3.
 
 ## Usage
 
@@ -21,11 +21,7 @@ hpack && cabal run
 
 ### IDE
 
-Your editor can invoke the following to get language server analysis:
-
-```
-ghcide
-```
+Your editor can use `haskell-language-server` to get language server analysis.
 
 You can invoke the following in a terminal to get live error info:
 
