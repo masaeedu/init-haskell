@@ -23,6 +23,8 @@ hpack && cabal run
 
 Your editor can use `haskell-language-server` to get language server analysis.
 
+Note: the Cabal file must exist for this to work (so you need to generate it by running `hpack`).
+
 You can invoke the following in a terminal to get live error info:
 
 ```

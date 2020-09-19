@@ -1,4 +1,16 @@
 {
+  "all-hls": {
+    "branch": "master",
+    "description": null,
+    "homepage": "",
+    "owner": "masaeedu",
+    "repo": "all-hls",
+    "rev": "d3f1313b8f15020d4fd5802ba28803cd1092d204",
+    "sha256": "1bhyk12f669y9jbjfkjqrb0pa4pnphvcs65mxrrr5fqv49hp6dna",
+    "type": "tarball",
+    "url": "https://github.com/masaeedu/all-hls/archive/d3f1313b8f15020d4fd5802ba28803cd1092d204.tar.gz",
+    "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+  },
   "iohk-hnix": {
     "branch": "master",
     "description": "Alternative Haskell Infrastructure for Nixpkgs",
