@@ -11,8 +11,8 @@ projectname=${PWD##*/}
 cat <<EOF >$data
 { "author": "$(git config user.name)"
 , "email": "$(git config user.email)"
-, "ghc": "ghc883"
-, "snapshot": "2020-07-01T00:00:00Z"
+, "ghc": "ghc8102"
+, "snapshot": "2020-11-01T00:00:00Z"
 , "projectname": "${projectname}"
 }
 EOF
@@ -30,7 +30,9 @@ niv init
 mustache $base/templates/cabal.project >./cabal.project <$data
 mustache $base/templates/package.yaml >./package.yaml <$data
 
-# Add default.nix
+# Add nix files
+mustache $base/templates/snapshot.nix >./snapshot.nix <$data
+mustache $base/templates/compiler.nix >./compiler.nix <$data
 mustache $base/templates/default.nix >./default.nix <$data
 mustache $base/templates/shell.nix >./shell.nix <$data
 

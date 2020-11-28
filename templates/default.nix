@@ -1,6 +1,6 @@
 let
   sources = import ./nix/sources.nix;
-  compilerVersion = "{{ghc}}";
+  compilerVersion = import ./compiler.nix;
   hnix = import sources.iohk-hnix {};
   pkgs = (import hnix.sources.nixpkgs) hnix.nixpkgsArgs;
 in
