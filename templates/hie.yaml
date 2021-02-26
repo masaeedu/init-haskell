@@ -1,1 +1,10 @@
-cradle: { cabal: { component: "{{projectname}}" } }
+cradle:
+  cabal:
+  - path: "./lib"
+    component: "lib:{{projectname}}"
+
+  - path: "./app"
+    component: "{{projectname}}:exe:{{projectname}}"
+
+  - path: "./app/Paths_{{projectname}}.hs"
+    component: "{{projectname}}:exe:{{projectname}}"
