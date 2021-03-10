@@ -12,7 +12,7 @@ cat <<EOF >$data
 { "author": "$(git config user.name)"
 , "email": "$(git config user.email)"
 , "ghc": "ghc8104"
-, "snapshot": "2021-02-01T00:00:00Z"
+, "snapshot": "2021-03-01T00:00:00Z"
 , "projectname": "${projectname}"
 }
 EOF
