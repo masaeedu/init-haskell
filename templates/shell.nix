@@ -3,7 +3,7 @@ let
   compilerVersion = import ./compiler.nix;
   hnix = import sources.iohk-hnix {};
   pkgs = (import hnix.sources.nixpkgs) hnix.nixpkgsArgs;
-  hls = import sources.all-hls { inherit pkgs; version = "0.9.0"; ghc = "8.10.4"; }; # TODO: generate this string from the ghc template variable
+  hls = import sources.all-hls { inherit pkgs; version = "1.0.0"; ghc = "8.10.4"; }; # TODO: generate this string from the ghc template variable
   snapshot = import ./snapshot.nix;
 in
 (import ./.).shellFor {
