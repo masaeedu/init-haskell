@@ -5,10 +5,10 @@
     "homepage": "",
     "owner": "masaeedu",
     "repo": "all-hls",
-    "rev": "f672ca2d2c1fb73aca8f68af3e2ab1cfe36659ce",
-    "sha256": "15azz10aw1mykbpqygykkcg63hxs5xkvckqcszpg1wk6rgj3d7n4",
+    "rev": "37444886677c0ec549bfc38e08e4ef34c9681d33",
+    "sha256": "107g8y1lm1ylr5rp07zjssl7nzy4l6jqd6pnsq9fkx00vccnbjsd",
     "type": "tarball",
-    "url": "https://github.com/masaeedu/all-hls/archive/f672ca2d2c1fb73aca8f68af3e2ab1cfe36659ce.tar.gz",
+    "url": "https://github.com/masaeedu/all-hls/archive/37444886677c0ec549bfc38e08e4ef34c9681d33.tar.gz",
     "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
   },
   "iohk-hnix": {
@@ -17,10 +17,10 @@
     "homepage": "https://input-output-hk.github.io/haskell.nix",
     "owner": "input-output-hk",
     "repo": "haskell.nix",
-    "rev": "aad46b9a5bf0aacef94ee960cb3361bea306830a",
-    "sha256": "0vbzw469wxsqgl09mbdsd4dm09kngj8qqnc7v0sjcp3dsmfrir0g",
+    "rev": "fd076673073449765ec46d6c556759a5b76a0b2a",
+    "sha256": "04n9g5rr8qlgvafccpzkw12b60n4jx756bwlqfi444qr967wrwws",
     "type": "tarball",
-    "url": "https://github.com/input-output-hk/haskell.nix/archive/aad46b9a5bf0aacef94ee960cb3361bea306830a.tar.gz",
+    "url": "https://github.com/input-output-hk/haskell.nix/archive/fd076673073449765ec46d6c556759a5b76a0b2a.tar.gz",
     "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
   },
   "niv": {
