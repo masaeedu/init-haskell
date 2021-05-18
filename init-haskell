@@ -39,6 +39,10 @@ mustache $base/templates/shell.nix >./shell.nix <$data
 # Add hie.yaml file to help language server figure out what's what
 mustache $base/templates/hie.yaml >./hie.yaml <$data
 
+# Add some vim config to help editor pick up the language server
+mkdir .vim
+mustache $base/templates/.vim/coc-settings.json >./.vim/coc-settings.json <$data
+
 # Create direnv file
 mustache $base/templates/.envrc >./.envrc <$data
 
