@@ -5,6 +5,14 @@ set -Eeuxo pipefail
 # init-haskell location
 base=$(dirname "$(readlink -f "$0")")
 
+ghc=${1:-8.10.7}
+ghcparts=(${ghc//./ })
+ghcmajor=${ghcparts[0]}
+ghcminor=${ghcparts[1]}
+ghcpatch=${ghcparts[2]}
+
+today=$(date +"%Y-%m-%d")
+
 # Variables
 data=$(mktemp)
 projectname=${PWD##*/}
@@ -12,11 +20,11 @@ cat <<EOF >$data
 { "author": "$(git config user.name)"
 , "email": "$(git config user.email)"
 , "ghc":
-  { major: 8
-  , minor: 10
-  , patch: 7
+  { major: ${ghcmajor}
+  , minor: ${ghcminor}
+  , patch: ${ghcpatch}
   }
-, "snapshot": "2022-01-01T00:00:00Z"
+, "snapshot": "${today}T00:00:00Z"
 , "projectname": "${projectname}"
 }
 EOF
