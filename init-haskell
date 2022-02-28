@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell --pure --keep NIX_SSL_CERT_FILE --keep GITHUB_TOKEN -i bash -p git mustache-go niv direnv nix
+#! nix-shell --pure --keep NIX_SSL_CERT_FILE --keep GITHUB_TOKEN -i bash -p git mustache-go jq niv direnv nix
 set -Eeuxo pipefail
 
 # init-haskell location
@@ -11,7 +11,12 @@ ghcmajor=${ghcparts[0]}
 ghcminor=${ghcparts[1]}
 ghcpatch=${ghcparts[2]}
 
-today=$(date +"%Y-%m-%d")
+snapshot="2022-01-01T00:00:00Z"
+cabaltimestamp=~/.cabal/packages/hackage.haskell.org/timestamp.json
+
+if [ -f $cabaltimestamp ]; then
+  snapshot=$(jq '.signed | select(._type == "Timestamp") | .expires' $cabaltimestamp)
+fi
 
 # Variables
 data=$(mktemp)
@@ -24,7 +29,7 @@ cat <<EOF >$data
   , minor: ${ghcminor}
   , patch: ${ghcpatch}
   }
-, "snapshot": "${today}T00:00:00Z"
+, "snapshot": "${snapshot}"
 , "projectname": "${projectname}"
 }
 EOF
