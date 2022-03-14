@@ -16,7 +16,7 @@ cat <<EOF >$data
   , minor: 10
   , patch: 7
   }
-, "snapshot": "2022-01-01T00:00:00Z"
+, "snapshot": "2022-03-01T00:00:00Z"
 , "projectname": "${projectname}"
 }
 EOF
