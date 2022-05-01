@@ -15,7 +15,7 @@ snapshot="2022-01-01T00:00:00Z"
 cabaltimestamp=~/.cabal/packages/hackage.haskell.org/timestamp.json
 
 if [ -f $cabaltimestamp ]; then
-  snapshot=$(jq '.signed | select(._type == "Timestamp") | .expires' $cabaltimestamp)
+  snapshot=$(jq -r '.signed | select(._type == "Timestamp") | .expires' $cabaltimestamp)
 fi
 
 # Variables
