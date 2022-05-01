@@ -13,6 +13,12 @@ mkdir myprojectname && cd myprojectname
 init-haskell
 ```
 
+The above will default to using GHC 8.10.7. If you'd like to use a different version, simply pass the full version as an argument:
+
+```
+init-haskell 9.2.1
+```
+
 ### Build and run
 
 ```
